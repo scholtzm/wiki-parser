@@ -1,0 +1,14 @@
+<output>
+  <page>
+    <title>Hlavná stránka</title>
+    <alternative type="array">
+        <alt>Main Page</alt>
+    </alternative>
+  </page>
+  <page>
+    <title>Vedecká fantastika</title>
+    <alternative type="array">
+        <alt>Science fiction</alt>
+    </alternative>
+  </page>
+</output>
