@@ -1,0 +1,40 @@
+<mediawiki>
+  <page>
+    <title>Main Page</title>
+    <ns>0</ns>
+    <id>2</id>
+    <redirect title="Hlavná stránka" />
+    <revision>
+      <id>89777</id>
+      <timestamp>2003-08-31T12:01:53Z</timestamp>
+      <contributor>
+        <username>Andre Engels</username>
+        <id>2</id>
+      </contributor>
+      <text xml:space="preserve">#REDIRECT [[Hlavná stránka]]</text>
+      <sha1>gj4ij44roeqj42e06ryb2oj86hae6f8</sha1>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+    </revision>
+  </page>
+  <page>
+    <title>Science fiction</title>
+    <ns>0</ns>
+    <id>698</id>
+    <redirect title="Vedecká fantastika" />
+    <revision>
+      <id>90471</id>
+      <parentid>11896</parentid>
+      <timestamp>2005-01-09T22:58:54Z</timestamp>
+      <contributor>
+        <username>AtonX</username>
+        <id>147</id>
+      </contributor>
+      <comment>#REDIRECT [[Vedecká fantastika]] (Slovenské názvy článkov)</comment>
+      <text xml:space="preserve">#REDIRECT [[Vedecká fantastika]]</text>
+      <sha1>tvamc8dug349j9410pe1pcdqvogaf85</sha1>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+    </revision>
+  </page>
+</mediawiki>
