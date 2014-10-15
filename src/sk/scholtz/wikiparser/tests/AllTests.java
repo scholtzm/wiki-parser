@@ -11,7 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({ ProcessorTest.class, XmlParserTest.class })
+@SuiteClasses({ XmlParserTest.class, ProcessorTest.class })
 public class AllTests {
 
 }

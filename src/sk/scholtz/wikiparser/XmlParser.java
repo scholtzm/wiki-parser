@@ -37,9 +37,7 @@ public class XmlParser {
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             SaxHandler saxHandler = new SaxHandler();
 
-            System.out.println("Starting the parser ...");
             parser.parse(inputFile, saxHandler);
-            System.out.println("Done parsing!");
 
             return saxHandler.getPageList();
         } catch (Exception e) {
@@ -53,10 +51,8 @@ public class XmlParser {
     /**
      * Write final output into XML file
      * 
-     * @param outputFile
-     *            Chosen outputFile
-     * @param wikiRecords
-     *            Processed Wiki pages
+     * @param outputFile Chosen outputFile
+     * @param wikiRecords Processed Wiki pages
      */
     public void write(String outputFile, HashMap<String, Record> wikiRecords) {
         try {
@@ -71,8 +67,8 @@ public class XmlParser {
                 ArrayList<String> alternatives = wikiRecord.getValue()
                         .getAlternatives();
 
+                // Skip every record with 0 alternative titles
                 if (alternatives.size() != 0) {
-
                     writer.writeStartElement("page");
 
                     writer.writeStartElement("title");

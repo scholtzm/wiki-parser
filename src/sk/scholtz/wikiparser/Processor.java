@@ -34,7 +34,7 @@ public class Processor {
                     wikiRecords.put(record.getTitle(), record);
                 }
 
-                // This is just a redirect.
+            // This is just a redirect.
             } else {
 
                 // We already have this page in our HashMap, add alternative
@@ -43,7 +43,7 @@ public class Processor {
                     wikiRecords.get(page.getRedirect()).addAlternative(
                             page.getTitle());
 
-                    // Fresh record.
+                // Fresh record.
                 } else {
                     Record record = new Record();
                     record.setTitle(page.getRedirect());
