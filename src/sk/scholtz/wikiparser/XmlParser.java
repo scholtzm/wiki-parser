@@ -16,32 +16,35 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * XML Parser class which parses XML database using DOM parser
- * 
+ *
  * @author Mike
  */
 public class XmlParser {
-    private String inputFile;
 
-    public XmlParser(String inputFile) {
-        this.inputFile = inputFile;
-    }
-
-    /**
-     * Parse selected XML (inputFile)
-     * 
-     * @return ArrayList of Page objects
-     * @throws Exception
-     */
-    public ArrayList<Page> parse() {
+    public ArrayList<Page> parseWiki(String inputFile) {
         try {
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
-            SaxHandler saxHandler = new SaxHandler();
 
-            parser.parse(inputFile, saxHandler);
-
-            return saxHandler.getPageList();
+            WikiHandler wikiHandler = new WikiHandler();
+            parser.parse(inputFile, wikiHandler);
+            return wikiHandler.getPageList();
         } catch (Exception e) {
-            System.out.println(e.getStackTrace());
+            System.out.println(e.getMessage());
+            System.exit(1);
+        }
+
+        return null;
+    }
+
+    public HashMap<String, Record> parseDump(String inputFile) {
+        try {
+            SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+
+            DumpHandler dumpHandler = new DumpHandler();
+            parser.parse(inputFile, dumpHandler);
+            return dumpHandler.getWikiRecords();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             System.exit(1);
         }
 
@@ -50,12 +53,14 @@ public class XmlParser {
 
     /**
      * Write final output into XML file
-     * 
+     *
      * @param outputFile Chosen outputFile
      * @param wikiRecords Processed Wiki pages
      */
     public void write(String outputFile, HashMap<String, Record> wikiRecords) {
         try {
+
+
             FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
             XMLStreamWriter writer = XMLOutputFactory.newInstance()
                     .createXMLStreamWriter(fileOutputStream, "UTF-8");
@@ -96,19 +101,19 @@ public class XmlParser {
             writer.close();
             fileOutputStream.close();
         } catch (Exception e) {
-            System.out.println(e.getStackTrace());
+            System.out.println(e.getMessage());
             System.exit(1);
         }
 
     }
 
     /**
-     * Handler for the SAX parser
-     * 
+     * Wiki Handler for the SAX parser
+     *
      * @author Mike
-     * 
+     *
      */
-    class SaxHandler extends DefaultHandler {
+    class WikiHandler extends DefaultHandler {
         private final String PAGE = "page";
         private final String TITLE = "title";
         private final String REDIRECT = "redirect";
@@ -162,6 +167,77 @@ public class XmlParser {
             } else if (qName.equals(TITLE)) {
                 if (inPage) {
                     page.setTitle(value.toString());
+                }
+            }
+        }
+
+        @Override
+        public void characters(char ch[], int start, int length)
+                throws SAXException {
+            value.append(ch, start, length);
+        }
+    }
+
+    /**
+     * Dump Handler for the SAX parser
+     *
+     * @author Mike
+     *
+     */
+    class DumpHandler extends DefaultHandler {
+        private final String PAGE = "page";
+        private final String TITLE = "title";
+        private final String ALT = "alt";
+
+        private boolean inPage = false;
+
+        private StringBuilder value;
+        private Record record;
+
+        private HashMap<String, Record> wikiRecords;
+
+        public HashMap<String, Record> getWikiRecords() {
+            return this.wikiRecords;
+        }
+
+        /*
+         * Define necessary callbacks for the SAX parsing handler
+         */
+        @Override
+        public void startDocument() throws SAXException {
+            wikiRecords = new HashMap<String, Record>();
+        }
+
+        @Override
+        public void endDocument() throws SAXException {
+        }
+
+        @Override
+        public void startElement(String uri, String localName, String qName,
+                Attributes attributes) throws SAXException {
+            value = new StringBuilder();
+
+            if (qName.equals(PAGE)) {
+                inPage = true;
+                record = new Record();
+            }
+        }
+
+        @Override
+        public void endElement(String uri, String localName, String qName)
+                throws SAXException {
+            if (qName.equals(PAGE)) {
+                inPage = false;
+                wikiRecords.put(record.getTitle(), record);
+
+            } else if (qName.equals(TITLE)) {
+                if (inPage) {
+                    record.setTitle(value.toString());
+                }
+
+            } else if (qName.equals(ALT)) {
+                if (inPage) {
+                    record.addAlternative(value.toString());
                 }
             }
         }

@@ -31,4 +31,15 @@ public class Record {
     public void addAlternative(String alternative) {
         this.alternatives.add(alternative);
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Record)) {
+            return false;
+        }
+
+        Record compared = (Record) object;
+
+        return this.title.equals(compared.getTitle()) && this.alternatives.equals(compared.getAlternatives());
+    }
 }

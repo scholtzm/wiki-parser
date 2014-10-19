@@ -26,8 +26,8 @@ public class ProcessorTest {
 
     @BeforeClass
     public static void runBeforeAllTests() {
-        xmlParser = new XmlParser(new File(INPUTFILE).getAbsolutePath());
-        xmlParserResult = xmlParser.parse();
+        xmlParser = new XmlParser();
+        xmlParserResult = xmlParser.parseWiki(new File(INPUTFILE).getAbsolutePath());
 
         processor = new Processor(xmlParserResult);
     }

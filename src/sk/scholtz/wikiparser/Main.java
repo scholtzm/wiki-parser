@@ -20,7 +20,7 @@ public class Main {
 
         if (args.length < 1) {
             System.out.println(TITLE + " - " + AUTHOR + " - " + YEAR);
-            System.out.println("Usage: java wikiparser <input>");
+            System.out.println("Usage: java -jar wikiparser.jar <input>");
             System.out.println("    input : input file in valid XML format");
 
             return;
@@ -35,13 +35,13 @@ public class Main {
         System.out.println("Output file: " + outputFile);
 
         // Setup XmlParser
-        XmlParser xmlParser = new XmlParser(inputFile);
+        XmlParser xmlParser = new XmlParser();
 
         // Parse inputFile
         t1 = System.currentTimeMillis();
         System.out.println("Parsing data ...");
 
-        ArrayList<Page> wikiPages = xmlParser.parse();
+        ArrayList<Page> wikiPages = xmlParser.parseWiki(inputFile);
 
         System.out.println(String.format("Parsing took: %.3f seconds", ((double)(System.currentTimeMillis() - t1) / 1000)));
 
