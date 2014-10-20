@@ -15,7 +15,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * XML Parser class which parses XML database using DOM parser
+ * XML Parser class which parses XML files using SAX parser
  *
  * @author Mike
  */
@@ -59,8 +59,6 @@ public class XmlParser {
      */
     public void write(String outputFile, HashMap<String, Record> wikiRecords) {
         try {
-
-
             FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
             XMLStreamWriter writer = XMLOutputFactory.newInstance()
                     .createXMLStreamWriter(fileOutputStream, "UTF-8");
