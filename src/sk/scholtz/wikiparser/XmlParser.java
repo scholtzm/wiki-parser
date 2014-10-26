@@ -116,9 +116,7 @@ public class XmlParser {
         private final String TITLE = "title";
         private final String REDIRECT = "redirect";
 
-        private boolean inPage = false;
-
-        private StringBuilder value;
+        private String value;
         private Page page;
 
         private ArrayList<Page> pageList;
@@ -142,16 +140,12 @@ public class XmlParser {
         @Override
         public void startElement(String uri, String localName, String qName,
                 Attributes attributes) throws SAXException {
-            value = new StringBuilder();
 
             if (qName.equals(PAGE)) {
-                inPage = true;
                 page = new Page();
 
             } else if (qName.equals(REDIRECT)) {
-                if (inPage) {
-                    page.setRedirect(attributes.getValue(0));
-                }
+                page.setRedirect(attributes.getValue(0));
             }
         }
 
@@ -159,20 +153,17 @@ public class XmlParser {
         public void endElement(String uri, String localName, String qName)
                 throws SAXException {
             if (qName.equals(PAGE)) {
-                inPage = false;
                 pageList.add(page);
 
             } else if (qName.equals(TITLE)) {
-                if (inPage) {
-                    page.setTitle(value.toString());
-                }
+                page.setTitle(value.toString());
             }
         }
 
         @Override
         public void characters(char ch[], int start, int length)
                 throws SAXException {
-            value.append(ch, start, length);
+            value = new String(ch, start, length);
         }
     }
 
@@ -187,9 +178,7 @@ public class XmlParser {
         private final String TITLE = "title";
         private final String ALT = "alt";
 
-        private boolean inPage = false;
-
-        private StringBuilder value;
+        private String value;
         private Record record;
 
         private HashMap<String, Record> wikiRecords;
@@ -213,10 +202,7 @@ public class XmlParser {
         @Override
         public void startElement(String uri, String localName, String qName,
                 Attributes attributes) throws SAXException {
-            value = new StringBuilder();
-
             if (qName.equals(PAGE)) {
-                inPage = true;
                 record = new Record();
             }
         }
@@ -225,25 +211,20 @@ public class XmlParser {
         public void endElement(String uri, String localName, String qName)
                 throws SAXException {
             if (qName.equals(PAGE)) {
-                inPage = false;
                 wikiRecords.put(record.getTitle(), record);
 
             } else if (qName.equals(TITLE)) {
-                if (inPage) {
-                    record.setTitle(value.toString());
-                }
+                record.setTitle(value.toString());
 
             } else if (qName.equals(ALT)) {
-                if (inPage) {
-                    record.addAlternative(value.toString());
-                }
+                record.addAlternative(value.toString());
             }
         }
 
         @Override
         public void characters(char ch[], int start, int length)
                 throws SAXException {
-            value.append(ch, start, length);
+            value = new String(ch, start, length);
         }
     }
 }

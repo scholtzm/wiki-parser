@@ -5,9 +5,9 @@ import java.util.HashMap;
 
 /**
  * Main class
- * 
+ *
  * @author Mike
- * 
+ *
  */
 public class Main {
     private static final String TITLE = "wiki-parser";
