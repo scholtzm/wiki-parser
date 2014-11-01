@@ -4,6 +4,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.commons.cli.BasicParser;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
 /**
  * Main class
  *
@@ -11,6 +18,8 @@ import java.util.HashMap;
  *
  */
 public class Main {
+    private static Options options = new Options();
+
     private static final String TITLE = "wiki-parser";
     private static final String AUTHOR = "Michael Scholtz";
     private static final int YEAR = 2014;
@@ -18,33 +27,83 @@ public class Main {
     public static void main(String[] args) {
         // Timer variable
         long t1;
+        // Operation mode W or P
+        OperationMode opMode = OperationMode.WIKIPEDIA;
+        // Other variables coming from command line arguments
+        String inputFile = "";
+        String outputFile = "";
+        String query = "";
+        int hits = 100;
 
-        if (args.length < 2 || args.length > 50) {
-            printHelp();
-            return;
+        // Process command line options
+        createOptions();
+
+        CommandLineParser parser = new BasicParser();
+        try {
+            CommandLine line = parser.parse(options, args);
+
+            // help
+            if(line.hasOption("h")) {
+                printHelp();
+                return;
+            }
+
+            // mode and query
+            if(line.hasOption("W")) {
+                opMode = OperationMode.WIKIPEDIA;
+            } else if(line.hasOption("P")) {
+                opMode = OperationMode.WIKIPARSER;
+
+                if(line.hasOption("q")) {
+                    query = line.getOptionValue("q");
+                } else {
+                    printHelp();
+                    return;
+                }
+            } else {
+                printHelp();
+                return;
+            }
+
+            // input file
+            if(line.hasOption("i")) {
+                inputFile = line.getOptionValue("i");
+            } else {
+                printHelp();
+                return;
+            }
+
+            // output file
+            if(line.hasOption("o")) {
+                outputFile = line.getOptionValue("o");
+            } else {
+                outputFile = inputFile + "-output.xml";
+            }
+
+            // hits
+            if(line.hasOption("H")) {
+                try {
+                    hits = Integer.parseInt(line.getOptionValue("H"));
+                } catch(Exception e) {
+                    System.out.println("Exception: " + e.getMessage());
+                    printHelp();
+                    return;
+                }
+            }
         }
-
-        OperationMode opMode;
-
-        if(args[0].equals("-W")) {
-            opMode = OperationMode.WIKIPEDIA;
-        } else if(args[0].equals("-L")) {
-            opMode = OperationMode.WIKIPARSER;
-        } else {
-            printHelp();
-            return;
+        catch(ParseException e) {
+            System.out.println("Command line exception: " + e.getMessage());
+            System.exit(1);
         }
-
-        String inputFile = args[1];
-        String outputFile = inputFile + "-output.xml";
-        String query = args.length >= 3 ? args[2] : "";
 
         System.out.println("Starting " + TITLE + "...");
         System.out.println("Working Directory: " + System.getProperty("user.dir"));
         System.out.println("Mode: " + opMode.toString());
 
-        if(opMode == OperationMode.WIKIPARSER)
+        if(opMode == OperationMode.WIKIPARSER) {
             System.out.println("Query: " + query);
+            System.out.println("Hits: " + hits);
+        }
 
         System.out.println("Input file: " + inputFile);
 
@@ -54,7 +113,7 @@ public class Main {
         // Setup XmlParser
         XmlParser xmlParser = new XmlParser();
 
-     // Parsing and processing Wikipedia dumps
+        // Parsing and processing Wikipedia dumps
         if(opMode == OperationMode.WIKIPEDIA) {
             // Parse inputFile
             t1 = System.currentTimeMillis();
@@ -109,9 +168,10 @@ public class Main {
             System.out.println("Commencing search ...");
 
             try {
-                lucene.search(query);
+                lucene.search(query, hits);
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Error: " + e.getMessage());
+                return;
             }
 
             System.out.println(String.format("Searching took: %.3f seconds", ((double)(System.currentTimeMillis() - t1) / 1000)));
@@ -120,11 +180,19 @@ public class Main {
 
     public static void printHelp() {
         System.out.println(TITLE + " - " + AUTHOR + " - " + YEAR);
-        System.out.println("Usage: java -jar wikiparser.jar [-W input|-L input query]");
-        System.out.println("    -W : parse and process valid Wikipedia dump");
-        System.out.println("    -L : index and search valid Wikiparser dump");
-        System.out.println("    input : input file in valid XML format");
-        System.out.println("    query : Lucene query");
+
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("java -jar wikiparser.jar -W|-P -i <inputFile> [-q <query>] [-h <hits>]", options);
+    }
+
+    public static void createOptions() {
+        options.addOption("h", "help", false, "show this help");
+        options.addOption("W", "wikipedia", false, "use wikipedia mode");
+        options.addOption("P", "parser", false, "use wikiparser mode");
+        options.addOption("i", "inputFile", true, "input file");
+        options.addOption("o", "outputFile", true, "output file");
+        options.addOption("q", "query", true, "Lucene query");
+        options.addOption("H", "hits", true, "max number of Lucene search hits (default: 100)");
     }
 
     public enum OperationMode {

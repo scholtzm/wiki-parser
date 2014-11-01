@@ -23,12 +23,17 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
+/**
+ * Lucene search handling
+ *
+ * @author Mike
+ *
+ */
 public class LuceneSearch {
     private StandardAnalyzer analyzer;
     private Directory index;
 
     private final Version VERSION = Version.LUCENE_4_10_1;
-    private final int MAX_HITS = 100;
 
     public LuceneSearch() {
         this.analyzer = new StandardAnalyzer();
@@ -65,15 +70,15 @@ public class LuceneSearch {
      * @throws IOException
      * @throws ParseException
      */
-    public void search(String query) throws IOException, ParseException {
+    public void search(String query, int hits) throws IOException, ParseException {
         // Create multi-field query
-        String[] fields = new String[] {"title", "alt"};
+        String[] fields = new String[] { "title", "alt" };
         Query multiFieldQuery = new MultiFieldQueryParser(fields, analyzer).parse(query);
 
         // Start search
         IndexReader reader = DirectoryReader.open(index);
         IndexSearcher searcher = new IndexSearcher(reader);
-        TopScoreDocCollector collector = TopScoreDocCollector.create(MAX_HITS, true);
+        TopScoreDocCollector collector = TopScoreDocCollector.create(hits, true);
         searcher.search(multiFieldQuery, collector);
         ScoreDoc[] results = collector.topDocs().scoreDocs;
 
