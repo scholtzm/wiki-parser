@@ -1,16 +1,20 @@
-# wiki-parser (WIP)
+# Wikiparser
 
 This project aims to parse Wikipedia dumps and provide useful information about possible alternative titles for different wikipedia pages.
 
 ## Usage
 
-Run as:
+Run:
 
 ```
-java -jar wikiparser.jar <input>
-
-    input : input file in valid XML format
+java -jar wikiparser.jar -h
 ```
+
+This will show you detailed info about different modes and command line arguments.
+
+## Dependencies
+
+All dependencies are handled via Maven. See `pom.xml` for more info.
 
 ## Wikipedia XML dumps
 
