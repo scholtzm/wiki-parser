@@ -1,6 +1,9 @@
 package sk.scholtz.wikiparser;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -35,6 +38,9 @@ public class Main {
         String query = "";
         int hits = 100;
 
+        // Read stdin
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
         // Process command line options
         createOptions();
 
@@ -57,8 +63,18 @@ public class Main {
                 if(line.hasOption("q")) {
                     query = line.getOptionValue("q");
                 } else {
-                    printHelp();
-                    return;
+                    System.out.print("WIKIPARSER mode enabled. Enter your query: ");
+                    try {
+                        query = in.readLine();
+
+                        if(query.equals("/exit")) {
+                            System.exit(0);
+                        }
+                    } catch (IOException e) {
+                        System.out.println("Exception: " + e.getMessage());
+                        printHelp();
+                        return;
+                    }
                 }
             } else {
                 printHelp();
@@ -163,19 +179,33 @@ public class Main {
 
             System.out.println(String.format("Processing took: %.3f seconds", ((double)(System.currentTimeMillis() - t1) / 1000)));
 
-            // Commence search
-            t1 = System.currentTimeMillis();
-            System.out.println("Commencing search ...");
+            while(!query.equals("/exit")) {
+                // Commence search
+                t1 = System.currentTimeMillis();
+                System.out.println("Commencing search ...");
 
-            try {
-                lucene.search(query, hits);
-            } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
-                return;
+                try {
+                    lucene.search(query, hits);
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                    return;
+                }
+
+                System.out.println(String.format("Searching took: %.3f seconds", ((double)(System.currentTimeMillis() - t1) / 1000)));
+
+                System.out.println("Enter new query or type \"/exit\" to exit the application.");
+                System.out.print("New query: ");
+                try {
+                    query = in.readLine();
+                } catch (IOException e) {
+                    System.out.println("Exception: " + e.getMessage());
+                    printHelp();
+                    return;
+                }
             }
-
-            System.out.println(String.format("Searching took: %.3f seconds", ((double)(System.currentTimeMillis() - t1) / 1000)));
         }
+
+        System.out.println("Finished.");
     }
 
     public static void printHelp() {

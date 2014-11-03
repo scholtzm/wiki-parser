@@ -70,27 +70,24 @@ public class XmlParser {
                 ArrayList<String> alternatives = wikiRecord.getValue()
                         .getAlternatives();
 
-                // Skip every record with 0 alternative titles
-                if (alternatives.size() != 0) {
-                    writer.writeStartElement("page");
+                writer.writeStartElement("page");
 
-                    writer.writeStartElement("title");
-                    writer.writeCharacters(wikiRecord.getKey());
-                    writer.writeEndElement();
+                writer.writeStartElement("title");
+                writer.writeCharacters(wikiRecord.getKey());
+                writer.writeEndElement();
 
-                    writer.writeStartElement("alternative");
-                    writer.writeAttribute("type", "array");
+                writer.writeStartElement("alternative");
+                writer.writeAttribute("type", "array");
 
-                    for (int i = 0; i < alternatives.size(); i++) {
-                        writer.writeStartElement("alt");
-                        writer.writeCharacters(alternatives.get(i));
-                        writer.writeEndElement();
-                    }
-
-                    writer.writeEndElement();
-
+                for (int i = 0; i < alternatives.size(); i++) {
+                    writer.writeStartElement("alt");
+                    writer.writeCharacters(alternatives.get(i));
                     writer.writeEndElement();
                 }
+
+                writer.writeEndElement();
+
+                writer.writeEndElement();
             }
 
             writer.writeEndElement();
