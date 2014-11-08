@@ -199,7 +199,6 @@ public class Main {
                     query = in.readLine();
                 } catch (IOException e) {
                     System.out.println("Exception: " + e.getMessage());
-                    printHelp();
                     return;
                 }
             }
