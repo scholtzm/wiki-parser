@@ -2,9 +2,9 @@ package sk.scholtz.wikiparser;
 
 /**
  * POJO class for a single Wiki page
- * 
- * @author Mike
- * 
+ *
+ * @author Michael Scholtz
+ *
  */
 public class Page {
     private String title;

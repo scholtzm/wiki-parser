@@ -17,7 +17,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * XML Parser class which parses XML files using SAX parser
  *
- * @author Mike
+ * @author Michael Scholtz
  */
 public class XmlParser {
 
@@ -105,7 +105,7 @@ public class XmlParser {
     /**
      * Wiki Handler for the SAX parser
      *
-     * @author Mike
+     * @author Michael Scholtz
      *
      */
     class WikiHandler extends DefaultHandler {
@@ -167,7 +167,7 @@ public class XmlParser {
     /**
      * Dump Handler for the SAX parser
      *
-     * @author Mike
+     * @author Michael Scholtz
      *
      */
     class DumpHandler extends DefaultHandler {

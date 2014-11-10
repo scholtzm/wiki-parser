@@ -17,7 +17,7 @@ import org.apache.commons.cli.ParseException;
 /**
  * Main class
  *
- * @author Mike
+ * @author Michael Scholtz
  *
  */
 public class Main {

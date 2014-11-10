@@ -6,9 +6,9 @@ import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * Definition for the test suite
- * 
- * @author Mike
- * 
+ *
+ * @author Michael Scholtz
+ *
  */
 @RunWith(Suite.class)
 @SuiteClasses({ XmlParserTest.class, ProcessorTest.class })

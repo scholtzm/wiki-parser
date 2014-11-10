@@ -15,7 +15,7 @@ import sk.scholtz.wikiparser.*;
 /**
  * Tests for our XmlParser
  *
- * @author Mike
+ * @author Michael Scholtz
  *
  */
 public class XmlParserTest {

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 /**
  * POJO class for a single record
- * 
- * @author Mike
- * 
+ *
+ * @author Michael Scholtz
+ *
  */
 public class Record {
     private String title;

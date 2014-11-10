@@ -13,9 +13,9 @@ import sk.scholtz.wikiparser.*;
 
 /**
  * Tests for Processor class
- * 
- * @author Mike
- * 
+ *
+ * @author Michael Scholtz
+ *
  */
 public class ProcessorTest {
     private static final String INPUTFILE = "res/sample_alts_skwiki-latest-pages-articles.xml";

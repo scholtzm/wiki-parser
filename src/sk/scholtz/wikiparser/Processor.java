@@ -5,9 +5,9 @@ import java.util.List;
 
 /**
  * Class to further process our parsed Wiki dump
- * 
- * @author Mike
- * 
+ *
+ * @author Michael Scholtz
+ *
  */
 public class Processor {
     private List<Page> wikiPages;

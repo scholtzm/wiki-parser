@@ -26,7 +26,7 @@ import org.apache.lucene.util.Version;
 /**
  * Lucene search handling
  *
- * @author Mike
+ * @author Michael Scholtz
  *
  */
 public class LuceneSearch {
