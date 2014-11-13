@@ -54,23 +54,23 @@ public class ProcessorTest {
     @Test
     public void entryHlavnaStrankaDoesExist() {
         HashMap<String, Record> output = processor.DoWork();
-        assertTrue("Entry named `Hlavn· str·nka` does exist.", output.keySet()
-                .contains("Hlavn· str·nka"));
+        assertTrue("Entry named `Hlavn√° str√°nka` does exist.", output.keySet()
+                .contains("Hlavn√° str√°nka"));
     }
 
     @Test
     public void entryHlavnaStrankaHasOneAlternative() {
         HashMap<String, Record> output = processor.DoWork();
-        assertTrue("Entry named `Hlavn· str·nka` has one alternative.", output
-                .get("Hlavn· str·nka").getAlternatives().size() == 1);
+        assertTrue("Entry named `Hlavn√° str√°nka` has one alternative.", output
+                .get("Hlavn√° str√°nka").getAlternatives().size() == 1);
     }
 
     @Test
     public void entryHlavnaStrankasFirstAlternativeIsMainPage() {
         HashMap<String, Record> output = processor.DoWork();
         assertTrue(
-                "Entry named `Hlavn· str·nka` has first alternative `Main Page`.",
-                output.get("Hlavn· str·nka").getAlternatives().get(0)
+                "Entry named `Hlavn√° str√°nka` has first alternative `Main Page`.",
+                output.get("Hlavn√° str√°nka").getAlternatives().get(0)
                         .equals("Main Page"));
     }
 }
